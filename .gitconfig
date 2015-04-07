@@ -1,0 +1,71 @@
+[alias]
+    b           = branch
+    co          = checkout
+    s           = status
+    lpg         = log --topo-order --graph --pretty=format:'%h (%ar) %an -- %s'
+    lg          = log --topo-order --graph
+    lp          = log --pretty=oneline --abbrev-commit
+    ls          = log --stat
+    pick        = cherry-pick -x
+    c           = commit
+    cm          = commit -m
+    cam         = commit -am 
+    ri          = rebase -i
+    ri2         = rebase -i head~2
+    cont        = rebase --continue
+    amend       = commit --amend
+    tracking    = for-each-ref --format='%(refname:short) <- %(upstream:short)' refs/heads
+    undo        = git reset --soft HEAD^
+    reset       = reset head $1
+    trackit     = "!f(){ branch=$(git name-rev --name-only HEAD); cmd=\"git branch --set-upstream $branch ${1:-origin}/${2:-$branch}\"; echo $cmd; $cmd; }; f"
+    diff        = diff --ignore-space-at-eol
+    diffw       = diff --word-diff
+    pu          = !"git fetch origin -v; git fetch upstream -v; git merge upstream/$1"
+    file-diff   = diff --name-only
+    # fs, feature start
+    fs          = !git flow feature start $1 && grb publish feature/$1
+    # ff, feature finish. Always push to the final branch (remote) if it was successful
+    ff          = !git flow feature finish $1 && git push
+    undomerge   = reset --hard HEAD^
+    # branch-tags = log --simplify-by-decoration --decorate --pretty=oneline "$committish" | fgrep 'tag: '
+    
+    # delete-remote-tag = push origin :refs/tags/$1
+    
+    # git checkout develop # Switched to branch 'develop'
+    # $ git merge --no-ff myfeature Updating ea1b82a..05e9557
+    # (Summary of changes)
+    # $ git branch -d myfeature Deleted branch myfeature (was 05e9557).
+    # $ git push origin develop
+
+[color]
+    branch    = auto
+    diff      = auto
+    status    = auto
+[color "branch"]
+    current   = yellow reverse
+    local     = yellow 
+    remote    = green
+[color "diff"]
+    meta      = yellow bold
+    frag      = magenta bold
+    old       = red bold
+    new       = green bold
+[color "status"]
+    added     = yellow
+    changed   = green
+    untracked = cyan
+
+[core]
+    editor = mate -wl1
+    excludesfile = ~/.gitignore .idea *.iml .DS_Store
+
+[mergetool]
+    keepBackup = true
+[merge]
+    tool = opendiff
+[push]
+    default = upstream
+[apply]
+    whitespace = nowarn
+[rerere]
+    enabled = true
